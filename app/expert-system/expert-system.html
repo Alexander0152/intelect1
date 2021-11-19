@@ -1,0 +1,48 @@
+<div class="container-fluid">
+    <div class="mode-btn-wrapper">
+        <button type="button" ng-click="vm.mode = 'knowledge'" class="btn btn-primary mode-btn">Knowledge acquisition
+            mode
+        </button>
+        <button type="button" ng-click="vm.mode = 'solving'; vm.createMatrix();" class="btn btn-primary mode-btn">problem solving mode
+        </button>
+    </div>
+
+    <div class="content" ng-if="vm.mode === 'knowledge'">
+        <label class="primary" for="number_of_characteristics">Enter the number of characteristics:
+            <input type="number" class="form-control" id="number_of_characteristics" ng-model="vm.numberOfChars"
+                   ng-keyup="vm.setCharsArr()" placeholder="Number of characteristics">
+        </label>
+
+        <label ng-repeat="characteristic in vm.charsNumberArr"
+               for="number_of_characteristics">{{"Enter the characteristic number " + ($index + 1) + ":"}}
+            <input type="text" class="form-control" ng-model="vm.charsArr[$index]"
+                   placeholder="{{'Characteristic number ' + ($index + 1)}}">
+        </label>
+
+        <hr>
+
+        <label class="primary" for="number_of_characteristics">Enter the number of objects:
+            <input type="text" class="form-control" ng-model="vm.numberOfObjects" ng-keyup="vm.setObjectsArr()"
+                   placeholder="Number of objects">
+        </label>
+
+        <label ng-repeat="object in vm.objectsNumberArr"
+               for="number_of_characteristics">{{"Enter the object number " + ($index + 1) + ":"}}
+            <input type="text" class="form-control" ng-model="vm.objectsArr[$index]"
+                   placeholder="{{'Object number ' + ($index + 1)}}">
+        </label>
+
+        <hr>
+
+    </div>
+
+    <div class="content" ng-if="vm.mode === 'solving'">
+        <div ng-repeat="object in vm.objectsArr" style="display: flex; flex-direction: column">
+            <label ng-repeat="char in vm.charsArr">{{"Does the " + object + " has " + char + "?"}}
+                <input type="text" class="form-control" ng-model="vm.matrix[[]]"
+                       placeholder="{{'Object number ' + ($index + 1)}}">
+            </label>
+        </div>
+    </div>
+</div>
+

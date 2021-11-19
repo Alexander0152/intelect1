@@ -1,0 +1,43 @@
+body {
+    margin: 0 auto;
+    background-color: #f7e1b5;
+}
+
+.container-fluid {
+    background-color: #ffffff;
+    width: 700px;
+    min-height: 800px;
+    margin-top: 80px;
+    border-radius: 10px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.mode-btn-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+    margin: 30px auto;
+}
+
+.mode-btn {
+    border-radius: 20px;
+}
+
+input {
+    max-width: 400px;
+    margin: 10px 0 20px 0;
+}
+
+hr{
+    border-top: 1px solid black;
+    width: 400px;
+    margin: 0px 0 20px 0;
+}
+
+.primary{
+    color: forestgreen;
+}
