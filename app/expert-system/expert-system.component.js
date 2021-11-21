@@ -4,7 +4,8 @@ angular.module('expertSystem').component('expertSystem', {
     controller: function ExpertSystemController() {
         const vm = this;
 
-        vm.mode = 'knowledge';
+        let matrix = null;
+        vm.mode = 'knowledge1';
         vm.numberOfChars = null;
         vm.numberOfObjects = null;
         vm.charsNumberArr = [];
@@ -13,11 +14,14 @@ angular.module('expertSystem').component('expertSystem', {
         vm.objectsArr = [];
         vm.step3 = false;
 
-        vm.matrix = [[]];
+        vm.startSolving = () => startSolving();
+
+        vm.matrix = [];
 
         vm.setCharsArr = () => setCharsArr();
         vm.setObjectsArr = () => setObjectsArr();
         vm.createMatrix = () => createMatrix();
+        vm.show = () => console.log(vm.matrix);
 
         function setCharsArr() {
             vm.charsNumberArr = [];
@@ -38,15 +42,49 @@ angular.module('expertSystem').component('expertSystem', {
         }
 
         function createMatrix() {
-            vm.matrix = [[]];
-            let counter = 0;
-            for (let i = 0; i < vm.numberOfObjects; i++) {
-                for (let j = 0; j < vm.numberOfChars; j++) {
-                    vm.matrix[i][j] = counter;
-                    counter++;
+            vm.matrix = new Array(vm.numberOfChars);
+            for (let i = 0; i < vm.numberOfChars; i++) {
+                vm.matrix[i] = new Array(vm.numberOfObjects);
+                for (let j = 0; j < vm.numberOfObjects; j++) {
+                    vm.matrix[i][j] = '';
                 }
             }
-            console.log(vm.matrix);
+        }
+
+        vm.solvingQuestionObject = null;
+        vm.solvingQuestionChar = null;
+        vm.solvingQuestionValue = null;
+
+        function startSolving() {
+            matrix = [...vm.matrix];
+            matrix = removeRowsWithZeroValues(matrix);
+
+            console.log("MAAAATRix: ", matrix);
+        }
+
+        function removeRowsWithZeroValues(array) {
+            const zeroRows = [];
+
+            const filtered = array.filter(function (value, index, arr) {
+                let sum = 0;
+                for (let i = 0; i < value.length; i++) {
+                    sum += 1*value[i];
+                }
+                if (sum !== 0) {
+                    zeroRows.push(index);
+                    return value;
+                }
+            });
+            console.log("FILTERED: ", filtered);
+
+            vm.charsArr = vm.charsArr.filter(function (value, index) {
+                if (zeroRows.includes(index)) {
+                    return value;
+                }
+            });
+
+            console.log("AAAAA: ", vm.charsArr);
+            return filtered;
         }
     }
     ,
