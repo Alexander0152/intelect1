@@ -1,13 +1,15 @@
 <div class="container-fluid">
     <div class="mode-btn-wrapper">
-        <button type="button" ng-click="vm.mode = 'knowledge'" class="btn btn-primary mode-btn">Knowledge acquisition
-            mode
+        <button type="button" ng-click="vm.mode = 'knowledge1'" class="btn btn-primary mode-btn">Knowledge (step 1)
         </button>
-        <button type="button" ng-click="vm.mode = 'solving'; vm.createMatrix();" class="btn btn-primary mode-btn">problem solving mode
+        <button type="button" ng-click="vm.mode = 'knowledge2'; vm.createMatrix();" class="btn btn-primary mode-btn">
+            Knowledge (step 2)
+        </button>
+        <button type="button" ng-click="vm.mode = 'solving'; vm.startSolving();" class="btn btn-primary mode-btn">problem solving mode
         </button>
     </div>
 
-    <div class="content" ng-if="vm.mode === 'knowledge'">
+    <div class="content" ng-if="vm.mode === 'knowledge1'">
         <label class="primary" for="number_of_characteristics">Enter the number of characteristics:
             <input type="number" class="form-control" id="number_of_characteristics" ng-model="vm.numberOfChars"
                    ng-keyup="vm.setCharsArr()" placeholder="Number of characteristics">
@@ -36,12 +38,24 @@
 
     </div>
 
-    <div class="content" ng-if="vm.mode === 'solving'">
-        <div ng-repeat="object in vm.objectsArr" style="display: flex; flex-direction: column">
-            <label ng-repeat="char in vm.charsArr">{{"Does the " + object + " has " + char + "?"}}
-                <input type="text" class="form-control" ng-model="vm.matrix[[]]"
-                       placeholder="{{'Object number ' + ($index + 1)}}">
-            </label>
+    <div class="content" ng-if="vm.mode === 'knowledge2'">
+        <div ng-repeat="char in vm.charsArr" style="display: flex; flex-direction: column">
+            <form ng-repeat="object in vm.objectsArr">
+                <h4>{{"Does the " + object + " has " + char + "?"}}</h4>
+                <div>
+                    <label style="margin: 10px">Yes
+                    <input style="width: 30px; height: 30px; cursor: pointer" ng-change="vm.show()" type="radio" ng-model="vm.matrix[$parent.$index][$index]"
+                           name="contact" value="1">
+                    </label>
+                    <label style="margin: 10px">No
+                    <input style="width: 30px; height: 30px; cursor: pointer" ng-change="vm.show()" type="radio" ng-model="vm.matrix[$parent.$index][$index]"
+                           name="contact" value="0">
+                    </label>
+                </div>
+
+                <hr>
+
+            </form>
         </div>
     </div>
 </div>
