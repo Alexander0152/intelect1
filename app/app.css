@@ -19,12 +19,13 @@ body {
 .mode-btn-wrapper {
     display: flex;
     justify-content: space-between;
-    width: 70%;
+    width: 100%;
     margin: 30px auto;
 }
 
 .mode-btn {
     border-radius: 20px;
+    width: 190px;
 }
 
 input {
