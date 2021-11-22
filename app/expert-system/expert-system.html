@@ -5,7 +5,8 @@
         <button type="button" ng-click="vm.mode = 'knowledge2'; vm.createMatrix();" class="btn btn-primary mode-btn">
             Knowledge (step 2)
         </button>
-        <button type="button" ng-click="vm.mode = 'solving'; vm.startSolving();" class="btn btn-primary mode-btn">problem solving mode
+        <button type="button" ng-disabled="vm.mode != 'knowledge2'" ng-click="vm.mode = 'solving'; vm.startSolving();"
+                class="btn btn-primary mode-btn">problem solving mode
         </button>
     </div>
 
@@ -44,12 +45,14 @@
                 <h4>{{"Does the " + object + " has " + char + "?"}}</h4>
                 <div>
                     <label style="margin: 10px">Yes
-                    <input style="width: 30px; height: 30px; cursor: pointer" ng-change="vm.show()" type="radio" ng-model="vm.matrix[$parent.$index][$index]"
-                           name="contact" value="1">
+                        <input style="width: 30px; height: 30px; cursor: pointer" ng-change="vm.show()" type="radio"
+                               ng-model="vm.matrix[$parent.$index][$index]"
+                               name="contact" value="1">
                     </label>
                     <label style="margin: 10px">No
-                    <input style="width: 30px; height: 30px; cursor: pointer" ng-change="vm.show()" type="radio" ng-model="vm.matrix[$parent.$index][$index]"
-                           name="contact" value="0">
+                        <input style="width: 30px; height: 30px; cursor: pointer" ng-change="vm.show()" type="radio"
+                               ng-model="vm.matrix[$parent.$index][$index]"
+                               name="contact" value="0">
                     </label>
                 </div>
 
@@ -58,5 +61,23 @@
             </form>
         </div>
     </div>
-</div>
 
+    <div class="content" ng-if="vm.mode === 'solving'">
+        <h4>{{"Does the object has " + vm.solvingQuestionChar + " ?"}}</h4>
+        <div>
+            <label style="margin: 10px">Yes
+                <input style="width: 30px; height: 30px; cursor: pointer" ng-change="vm.answer()" type="radio"
+                       ng-model="vm.solvingQuestionValue"
+                       name="contact" value="1">
+            </label>
+            <label style="margin: 10px">No
+                <input style="width: 30px; height: 30px; cursor: pointer" ng-change="vm.answer()" type="radio"
+                       ng-model="vm.solvingQuestionValue"
+                       name="contact" value="0">
+            </label>
+        </div>
+
+        <hr>
+
+    </div>
+</div>
