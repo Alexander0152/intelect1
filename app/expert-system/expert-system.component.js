@@ -1,4 +1,3 @@
-// Register `phoneList` component, along with its associated controller and template
 angular.module('expertSystem').component('expertSystem', {
     templateUrl: 'expert-system/expert-system.html',
     controller: function ExpertSystemController() {
@@ -22,6 +21,7 @@ angular.module('expertSystem').component('expertSystem', {
         vm.setObjectsArr = () => setObjectsArr();
         vm.createMatrix = () => createMatrix();
         vm.show = () => console.log(vm.matrix);
+        vm.answer = () => answer();
 
         function setCharsArr() {
             vm.charsNumberArr = [];
@@ -51,15 +51,22 @@ angular.module('expertSystem').component('expertSystem', {
             }
         }
 
-        vm.solvingQuestionObject = null;
         vm.solvingQuestionChar = null;
         vm.solvingQuestionValue = null;
 
-        function startSolving() {
-            matrix = [...vm.matrix];
+        let minRow = null;
+
+        function startSolving(newMatrix) {
+            !newMatrix ? matrix = [...vm.matrix] : matrix = newMatrix;
             matrix = removeRowsWithZeroValues(matrix);
 
-            console.log("MAAAATRix: ", matrix);
+            let minRow = finedMinRow(matrix);
+            console.log("MIN ROW: ", minRow);
+            vm.solvingQuestionChar = vm.charsArr[minRow];
+        }
+
+        function answer() {
+            vm.solvingQuestionValue == 1 ? removeObjectsWithoutChar(vm.solvingQuestionChar) : removeObjectsWithoutChar(vm.solvingQuestionChar);
         }
 
         function removeRowsWithZeroValues(array) {
@@ -68,23 +75,97 @@ angular.module('expertSystem').component('expertSystem', {
             const filtered = array.filter(function (value, index, arr) {
                 let sum = 0;
                 for (let i = 0; i < value.length; i++) {
-                    sum += 1*value[i];
+                    sum += 1 * value[i];
                 }
                 if (sum !== 0) {
-                    zeroRows.push(index);
                     return value;
+                } else {
+                    zeroRows.push(index);
                 }
             });
-            console.log("FILTERED: ", filtered);
+            console.log("WITHOUT ZEROS: ", filtered);
 
             vm.charsArr = vm.charsArr.filter(function (value, index) {
-                if (zeroRows.includes(index)) {
+                if (!zeroRows.includes(index)) {
                     return value;
                 }
             });
 
-            console.log("AAAAA: ", vm.charsArr);
+            console.log("WITHOUT ZEROS CHARS: ", vm.charsArr);
             return filtered;
+        }
+
+        function removeObjectsWithoutChar(characteristic) {
+
+            let charNumber = vm.charsArr.indexOf(characteristic);
+            console.log("WITHOUT CHAR NUMBER: ", charNumber);
+            console.log("OBJECTS ARRAY1: ", vm.objectsArr);
+
+            matrix = transpose(matrix, matrix.length);
+            console.log("TRANSPOSE1: ", matrix);
+
+            if (vm.solvingQuestionValue == 1) {
+                matrix = matrix.filter(function (value, index) {
+                    if (value[charNumber] == 1) {
+                        return value;
+                    } else {
+                        vm.objectsArr[index] = null;
+                    }
+                });
+            } else {
+                matrix = matrix.filter(function (value, index) {
+                    if (value[charNumber] == 0) {
+                        return value;
+                    } else {
+                        vm.objectsArr[index] = null;
+                    }
+                });
+            }
+
+            vm.objectsArr = vm.objectsArr.filter(function (value) {
+                if (value != null) {
+                    return value;
+                }
+            });
+
+            console.log("FILTERED1: ", matrix);
+
+            matrix = transpose(matrix, matrix.length);
+            console.log("TRANSPOSE BACK: ", matrix);
+            console.log("OBJECTS ARRAY2: ", vm.objectsArr);
+            vm.solvingQuestionValue = null;
+
+            vm.objectsArr.length !== 1 ? startSolving(matrix) : finish(matrix);
+
+            return;
+        }
+
+        function finish(array) {
+            array.length === 0 ? alert("Undetected object") : alert(`Object is: ${vm.objectsArr[0]}`);
+        }
+
+        const transpose = matrix => matrix[0].map((col, i) => matrix.map(row => row[i]));
+
+        function finedMinRow(array) {
+            let minSum = Number.MAX_VALUE;
+            let minNumber = 0;
+            let sum = 0;
+            let count = 0;
+
+            for (let i = 0; i < array.length; i++) {
+                for (let j = 0; j < array[i].length; j++) {
+                    sum += 1 * array[i][j];
+                }
+                if (sum === 1) {
+                    return count;
+                } else if (sum < minSum) {
+                    minNumber = count;
+                    minSum = sum;
+                }
+                sum = 0;
+                count++;
+            }
+            return minNumber;
         }
     }
     ,
