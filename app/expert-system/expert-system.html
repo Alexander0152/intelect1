@@ -5,7 +5,7 @@
         <button type="button" ng-click="vm.mode = 'knowledge2'; vm.createMatrix();" class="btn btn-primary mode-btn">
             Knowledge (step 2)
         </button>
-        <button type="button" ng-disabled="vm.mode != 'knowledge2'" ng-click="vm.mode = 'solving'; vm.startSolving();"
+        <button type="button" ng-disabled="vm.mode != 'knowledge2'" ng-click="vm.mode = 'solving'; vm.startSolving(); vm.createBackup()"
                 class="btn btn-primary mode-btn">problem solving mode
         </button>
     </div>
