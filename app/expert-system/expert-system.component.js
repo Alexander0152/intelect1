@@ -10,18 +10,22 @@ angular.module('expertSystem').component('expertSystem', {
         vm.charsNumberArr = [];
         vm.objectsNumberArr = [];
         vm.charsArr = [];
+        let charsArrBackup = null;
         vm.objectsArr = [];
+        let objectsArrBackup = null;
         vm.step3 = false;
 
         vm.startSolving = () => startSolving();
 
         vm.matrix = [];
+        let matrixBackup = null;
 
         vm.setCharsArr = () => setCharsArr();
         vm.setObjectsArr = () => setObjectsArr();
         vm.createMatrix = () => createMatrix();
         vm.show = () => console.log(vm.matrix);
         vm.answer = () => answer();
+        vm.createBackup = () => createBackup();
 
         function setCharsArr() {
             vm.charsNumberArr = [];
@@ -66,7 +70,7 @@ angular.module('expertSystem').component('expertSystem', {
         }
 
         function answer() {
-            vm.solvingQuestionValue == 1 ? removeObjectsWithoutChar(vm.solvingQuestionChar) : removeObjectsWithoutChar(vm.solvingQuestionChar);
+            removeObjectsWithoutChar(vm.solvingQuestionChar);
         }
 
         function removeRowsWithZeroValues(array) {
@@ -142,6 +146,7 @@ angular.module('expertSystem').component('expertSystem', {
 
         function finish(array) {
             array.length === 0 ? alert("Undetected object") : alert(`Object is: ${vm.objectsArr[0]}`);
+            newCycle();
         }
 
         const transpose = matrix => matrix[0].map((col, i) => matrix.map(row => row[i]));
@@ -166,6 +171,20 @@ angular.module('expertSystem').component('expertSystem', {
                 count++;
             }
             return minNumber;
+        }
+
+        function createBackup() {
+            objectsArrBackup = [...vm.objectsArr];
+            charsArrBackup = [...vm.charsArr];
+            matrixBackup = [...vm.matrix];
+        }
+
+        function newCycle() {
+            vm.matrix = [...matrixBackup];
+            console.log("MATRIXXX: ", vm.matrix);
+            vm.charsArr = [...charsArrBackup];
+            vm.objectsArr = [...objectsArrBackup];
+            startSolving();
         }
     }
     ,
